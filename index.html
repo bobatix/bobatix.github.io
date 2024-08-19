@@ -42,7 +42,7 @@
 </head>
 
 <body>
-
+  <div id="overlay"></div>
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center">
@@ -147,7 +147,7 @@
           <div class="Center">
             <div class="prt">
             <p>
-              <center>  Greetings people !.</center>
+              <center>  Greetings people ! I am T.Giridhar, Owner of bobatix.com</center>
               <center>Bobatix™ is a New Zealand based ed-tech Firm currently offering highly personalised and effective training programs.<br></center>
               <center>We target existing profesionals looking for change in domain in their work and also students who are eager to get into IT industry.<br></center>
               <center>Our operations across asian countries like Indonesia,India,Srilanka,Maldives & Thailand has enormous response. <br></center>
@@ -465,6 +465,55 @@
           
          
     </section>
+  <!-- Refund Policy Card -->
+  <div id="refund-policy-card" style="display: none;">
+    <div class="card-content">
+      <span class="close-button" onclick="hideRefundPolicy()">&times;</span>
+      <h2>Bobatix Refund Policy</h2>
+      <p><strong>No Refunds After Sale</strong><br>All sales are final. We encourage you to review course details before purchasing.</p>
+      <p><strong>Automatic Refund for Transaction Issues</strong> <br>If you experience:
+        <ul>
+          <li>Failed payments</li>
+          <li>Duplicate charges</li>
+          <li>Course access issues</li>
+        </ul>
+        We'll automatically refund the amount to your original payment method within 3-5 business days.
+      </p>
+    </div>
+  </div>
+<!-- Refund Policy Card ends section -->
+
+  <!-- Terms and Conditions Card -->
+  <div id="terms-conditions-card" style="display: none;">
+    <div class="card-content">
+      <span class="close-button" onclick="hideTermsConditions()">&times;</span>
+      <h2>Bobatix Terms and Conditions</h2>
+      <h3>Course Enrollment and Access</h3>
+      <p>By enrolling in a course, you agree to pay the course fee and acknowledge that you have read and understood the course description, outline, and policies.</p>
+      <p>Course access is granted for a specific period, and you agree to complete the course within that timeframe.</p>
+      <h3>Intellectual Property</h3>
+      <p>All course materials, including videos, text, images, and software, are owned by Bobatix and protected by copyright.</p>
+      <p>You agree not to reproduce, distribute, or modify course materials without prior written consent.</p>
+      <h3>Payment and Refunds</h3>
+      <p>Course fees are non-refundable, except in cases where Bobatix cancels the course.</p>
+      <p>Payment plans and financing options may be available, but you agree to make timely payments and understand that late payments may incur additional fees.</p>
+      <h3>User Conduct</h3>
+      <p>You agree to use the course materials and platform for personal, non-commercial use only.</p>
+      <p>You agree not to share your login credentials or course access with others.</p>
+      <h3>Warranty Disclaimer</h3>
+      <p>Bobatix makes no warranties, express or implied, about the course materials or platform.</p>
+      <p>You acknowledge that courses may not be error-free or suitable for your specific needs.</p>
+      <h3>Limitation of Liability</h3>
+      <p>Bobatix shall not be liable for any damages or losses arising from your use of the course materials or platform.</p>
+      <h3>Governing Law and Jurisdiction</h3>
+      <p>These Terms and Conditions shall be governed by and construed in accordance with the laws of [Your Country/State].</p>
+      <p>Any disputes arising from these Terms and Conditions shall be resolved through [dispute resolution process].</p>
+      <h3>Changes to Terms and Conditions</h3>
+      <p>Bobatix reserves the right to modify or update these Terms and Conditions at any time.</p>
+      <p>You agree to review these Terms and Conditions regularly and acknowledge that continued use of the course materials or platform constitutes acceptance of any changes.</p>
+    </div>
+  </div>
+  <!-- Terms and Conditions Card End-->
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
@@ -476,13 +525,9 @@
           <div class="col-lg-3 col-md-6 footer-contact">
             <h3>Bobatix</h3>
             <p>
-              [Main Office]<br>
-              2-26 Wiley Road,Wanaka 9305,<br>
-              New Zealand <br>
-              [Indian Branch]<br>
               2nd floor,Haware Fantasia,Sector 30A<br>
               Vashi,Navi Mumbai,Mumbai,India<br>
-              <strong>Phone:</strong>+64 55512798<br>
+              <strong>Phone:</strong>+91 9108400249<br>
               <strong>Email:</strong> Bobatixtechcare@gmail.com<br>
             </p>
           </div>
@@ -491,9 +536,9 @@
             <h4>Useful Links</h4>
             <ul>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="javascript:void(0)" onclick="showRefundPolicy()">Refund Policy</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="javascript:void(0)" onclick="showTermsConditions()">Terms & Conditions</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
             </ul>
           </div>
@@ -545,6 +590,32 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+    function showRefundPolicy() 
+    {
+      document.getElementById('refund-policy-card').style.display = 'flex';
+      document.getElementById("overlay").style.display = "block";
+    }
+
+    function hideRefundPolicy()
+    {
+      document.getElementById('refund-policy-card').style.display = 'none';
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function showTermsConditions()
+    {
+      document.getElementById('terms-conditions-card').style.display = 'flex';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+function hideTermsConditions()
+    {
+      document.getElementById('terms-conditions-card').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+  </script>
 
 </body>
 
