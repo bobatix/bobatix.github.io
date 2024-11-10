@@ -1886,3 +1886,6 @@ section {
   overflow-y: auto;
   max-height: 80vh;
 }
+.center {
+  text-align: center;
+}
