@@ -151,7 +151,7 @@
       border-radius: 10px;
     }
     .course-selector-section {
-            min-height: 50vh;
+            min-height: 10vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -570,6 +570,9 @@
         const proceedButton = document.getElementById('proceedButton');
         const cancelButton = document.getElementById('cancelButton');
 
+        syllabusDownloadBtn.style.display = 'none';
+        buyNowBtn.style.display = 'none';
+
         // Pricing configuration
         const coursePricing = {
             'computer-science': 100,
@@ -602,35 +605,34 @@
         }
 
         courseDropdown.addEventListener('change', function() {
-            // Hide all subject containers
-            Object.values(subjectContainers).forEach(container => {
-                container.classList.remove('active');
-                
-                // Clear all checkboxes in subject containers
-                container.querySelectorAll('input[name="subject"]').forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-            });
-
-            // Show selected course's subjects
-            const selectedContainer = subjectContainers[this.value];
-            if (selectedContainer) {
-                selectedContainer.classList.add('active');
-                
-                // Show syllabus download button
-                syllabusDownloadBtn.style.display = 'block';
-
-                // Update buy now button with base price
-                const coursePrice = coursePricing[this.value];
-                buyNowBtn.textContent = coursePrice ? `Buy Now - £${coursePrice} per Subject` : 'Buy Now';
-            } else {
-                // Hide syllabus download button if no course selected
-                syllabusDownloadBtn.style.display = 'none';
-            }
-
-            // Reset buy now button
-            buyNowBtn.classList.remove('active');
+    // Hide all subject containers
+    Object.values(subjectContainers).forEach(container => {
+        container.classList.remove('active');
+        
+        // Clear all checkboxes in subject containers
+        container.querySelectorAll('input[name="subject"]').forEach(checkbox => {
+            checkbox.checked = false;
         });
+    });
+
+    // Show selected course's subjects
+    const selectedContainer = subjectContainers[this.value];
+    if (selectedContainer) {
+        selectedContainer.classList.add('active');
+        
+        // Show syllabus download button
+        syllabusDownloadBtn.style.display = 'block';
+
+        // Reset buy now button
+        buyNowBtn.style.display = 'block';
+        buyNowBtn.textContent = 'Select Subjects';
+        buyNowBtn.classList.remove('active');
+    } else {
+        // Hide syllabus download button if no course selected
+        syllabusDownloadBtn.style.display = 'none';
+        buyNowBtn.style.display = 'none';
+    }
+});
 
         // Add event listeners to subject checkboxes
         document.querySelectorAll('input[name="subject"]').forEach(checkbox => {
