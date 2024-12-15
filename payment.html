@@ -122,6 +122,7 @@
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "https://secure.payu.in/_payment", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.withCredentials = true;
             xhr.timeout = 10000;
             xhr.onload = function() {
                 const responseArea = document.getElementById('responseArea');
