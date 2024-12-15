@@ -121,7 +121,8 @@
             formData.append("hash", hash);
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "https://secure.payu.in/_payment", true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Origin', 'https://www.bobatix.com');
+            xhr.setRequestHeader('Access-Control-Allow-Origin', 'https://www.bobatix.com');
             xhr.withCredentials = true;
             xhr.timeout = 10000;
             xhr.onload = function() {
