@@ -372,12 +372,25 @@
             <h2>Payment Confirmation</h2>
             <p>Please ensure you have a valid email address ready for the payment form. We'll use this email for all course-related communications.</p>
             <div class="course-selector-popup-buttons">
-                <button class="course-selector-popup-proceed" id="proceedButton">I Understand</button>
+                <button class="course-selector-popup-proceed" id="proceedButton">Make Payment</button>
                 <button class="course-selector-popup-cancel" id="cancelButton">Cancel</button>
             </div>
         </div>
     </div>
 </section>
+
+<form id="paymentForm" action="https://secure.payu.in/_payment" method="post">
+  <input type="hidden" name="key" value="YCtMoM">
+  <input type="hidden" name="txnid" value="TXN" id="txnid">
+  <input type="hidden" name="amount" value="">
+  <input type="hidden" name="productinfo" value="Test Product">
+  <input type="hidden" name="firstname" value="Giridhar">
+  <input type="hidden" name="email" value="gyromixes@gmail.com">
+  <input type="hidden" name="phone" value="9108400249">
+  <input type="hidden" name="surl" value="https://www.google.com">
+  <input type="hidden" name="furl" value="https://www.yahoo.com">
+  <input type="hidden" name="hash" id="hash">
+</form>
 
   <!-- Refund Policy Card -->
   <div id="refund-policy-card" style="display: none;">
@@ -526,6 +539,7 @@
 
   <!-- Template Main JS File -->
   <script src="../assets/js/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
   <script>
     function showRefundPolicy() {
@@ -585,8 +599,8 @@
         Object.values(subjectContainers).forEach(container => {
             container.classList.remove('active');
         });
-
-        function updateBuyNowButton() {
+        let updated_price_final;
+        async function updateBuyNowButton() {
             const selectedContainer = document.querySelector('.course-selector-subjects-container.active');
             if (!selectedContainer) return;
 
@@ -598,6 +612,9 @@
             if (selectedSubjects.length > 0) {
                 buyNowBtn.textContent = `Buy Now - Total: £${totalPrice} (${selectedSubjects.length} Subject${selectedSubjects.length > 1 ? 's' : ''})`;
                 buyNowBtn.classList.add('active');
+                updated_price_final = await convertGBPToINR(totalPrice);
+                document.querySelector('input[name="amount"]').value = updated_price_final;
+                console.log(updated_price_final);
             } else {
                 buyNowBtn.textContent = 'Buy Now';
                 buyNowBtn.classList.remove('active');
@@ -650,7 +667,6 @@
                 emailPopup.style.display = 'flex';
             }
         });
-
         // Proceed button in email popup
         proceedButton.addEventListener('click', function() {
             // Collect selected subjects
@@ -664,16 +680,58 @@
             const totalPrice = coursePrice * selectedSubjects.length;
 
             // Here you would typically send this information to a payment form or server
-            alert(`Proceeding to payment!\nCourse: ${selectedCourse}\nSubjects: ${selectedSubjects.join(', ')}\nTotal Price: £${totalPrice}`);
+            // alert(`Proceeding to payment!\nCourse: ${selectedCourse}\nSubjects: ${selectedSubjects.join(', ')}\nTotal Price: £${totalPrice}`);
 
-            // Close popup
-            emailPopup.style.display = 'none';
+            // // Close popup
+            // emailPopup.style.display = 'none';
         });
 
         // Cancel button in email popup
         cancelButton.addEventListener('click', function() {
             emailPopup.style.display = 'none';
         });
+
+        async function convertGBPToINR(totalPrice)
+        {
+          const apiUrl = `https://api.frankfurter.app/latest?from=GBP&to=INR`;
+          try
+          {
+              const response = await fetch(apiUrl);
+              const data = await response.json();
+              const conversionRate = data.rates.INR;
+              const updated_price_final = (totalPrice * conversionRate).toFixed(2);
+              return updated_price_final;
+          }
+          catch (error)
+            {
+              console.error("Error:", error.message);
+              return null;
+            }
+        }
+        document.getElementById('proceedButton').addEventListener('click', makePayment);
+        function makePayment() {
+            const apiKey = "YCtMoM";
+            const salt = "M3jlnljPiSY3n8g0TqaBJrrQWtInM5yM";
+            const amount = updated_price_final;
+            const productInfo = "Test Product";
+            const firstName = "Giridhar";
+            const email = "gyromixes@gmail.com";
+            const phone = "9108400249";
+            const txnId = "TXN" + Date.now();
+            const surl = "https://google.com";
+            const furl = "https://www.yahoo.com";
+            const hashString = `${apiKey}|${txnId}|${amount}|${productInfo}|${firstName}|${email}|||||||||||${salt}`;
+            const hash = sha512(hashString);
+
+            document.getElementById('txnid').value = txnId;
+            document.getElementById('hash').value = hash;
+
+            document.getElementById('paymentForm').submit();
+        }
+
+        function sha512(value) {
+            return CryptoJS.SHA512(value).toString(CryptoJS.enc.Hex);
+        }
   </script>
 
 </body>
