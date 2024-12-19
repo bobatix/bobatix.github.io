@@ -370,7 +370,11 @@
     <div id="emailPopup" class="course-selector-popup">
         <div class="course-selector-popup-content">
             <h2>Payment Confirmation</h2>
-            <p>Please ensure you have a valid email address ready for the payment form. We'll use this email for all course-related communications.</p>
+            <p>Please fill in the details. We'll use these details for all course-related communications.</p>
+            <h4>Enter Your Details</h4>
+            <input type="text" id="namex" placeholder="Name" value="" autocomplete="off"/><br>
+            <input type="email" id="emailx" placeholder="Email" value="" autocomplete="off"/><br>
+            <input type="tel" id="phonex" placeholder="Phone" value="" autocomplete="off"/><br>
             <div class="course-selector-popup-buttons">
                 <button class="course-selector-popup-proceed" id="proceedButton">Make Payment</button>
                 <button class="course-selector-popup-cancel" id="cancelButton">Cancel</button>
@@ -383,12 +387,12 @@
   <input type="hidden" name="key" value="YCtMoM">
   <input type="hidden" name="txnid" value="TXN" id="txnid">
   <input type="hidden" name="amount" value="">
-  <input type="hidden" name="productinfo" value="Test Product">
+  <input type="hidden" name="productinfo" value="">
   <input type="hidden" name="firstname" value="Giridhar">
   <input type="hidden" name="email" value="gyromixes@gmail.com">
   <input type="hidden" name="phone" value="9108400249">
-  <input type="hidden" name="surl" value="https://www.google.com">
-  <input type="hidden" name="furl" value="https://www.yahoo.com">
+  <input type="hidden" name="surl" value="https://bobatix.com/Pages/success_page.html">
+  <input type="hidden" name="furl" value="https://bobatix.com/Pages/fail_page.html">
   <input type="hidden" name="hash" id="hash">
 </form>
 
@@ -600,6 +604,7 @@
             container.classList.remove('active');
         });
         let updated_price_final;
+        let Final_Product="";
         async function updateBuyNowButton() {
             const selectedContainer = document.querySelector('.course-selector-subjects-container.active');
             if (!selectedContainer) return;
@@ -613,11 +618,18 @@
                 buyNowBtn.textContent = `Buy Now - Total: £${totalPrice} (${selectedSubjects.length} Subject${selectedSubjects.length > 1 ? 's' : ''})`;
                 buyNowBtn.classList.add('active');
                 updated_price_final = await convertGBPToINR(totalPrice);
+                let final_product_info=selectedCourse+" : "+Array.from(selectedSubjects).map(input => input.value).join(',');
                 document.querySelector('input[name="amount"]').value = updated_price_final;
-                console.log(updated_price_final);
+                document.querySelector('input[name="productinfo"]').value = `${final_product_info}`;
+                console.log(final_product_info);
+                Final_Product=final_product_info;
             } else {
                 buyNowBtn.textContent = 'Buy Now';
                 buyNowBtn.classList.remove('active');
+                document.querySelector('input[name="productinfo"]').value ="";
+                final_product_info = '';
+                Final_Product="";
+                console.log(final_product_info);
             }
         }
 
@@ -682,13 +694,18 @@
             // Here you would typically send this information to a payment form or server
             // alert(`Proceeding to payment!\nCourse: ${selectedCourse}\nSubjects: ${selectedSubjects.join(', ')}\nTotal Price: £${totalPrice}`);
 
-            // // Close popup
-            // emailPopup.style.display = 'none';
+            // Close popup
+            emailPopup.style.display = 'none';
         });
 
         // Cancel button in email popup
-        cancelButton.addEventListener('click', function() {
+        cancelButton.addEventListener('click', function()
+        {
+            document.querySelector('#namex').value = '';
+            document.querySelector('#emailx').value = '';
+            document.querySelector('#phonex').value = '';
             emailPopup.style.display = 'none';
+            paymentButton.disabled = true;
         });
 
         async function convertGBPToINR(totalPrice)
@@ -713,13 +730,15 @@
             const apiKey = "YCtMoM";
             const salt = "M3jlnljPiSY3n8g0TqaBJrrQWtInM5yM";
             const amount = updated_price_final;
-            const productInfo = "Test Product";
+            document.getElementsByName("amount")[0].value = updated_price_final;
+            const productInfo = Final_Product;
+            document.getElementsByName("productinfo")[0].value = Final_Product;
             const firstName = "Giridhar";
             const email = "gyromixes@gmail.com";
             const phone = "9108400249";
             const txnId = "TXN" + Date.now();
-            const surl = "https://google.com";
-            const furl = "https://www.yahoo.com";
+            const surl = "https://bobatix.com/Pages/success_page.html";
+            const furl = "https://bobatix.com/Pages/fail_page.html";
             const hashString = `${apiKey}|${txnId}|${amount}|${productInfo}|${firstName}|${email}|||||||||||${salt}`;
             const hash = sha512(hashString);
 
@@ -731,6 +750,27 @@
 
         function sha512(value) {
             return CryptoJS.SHA512(value).toString(CryptoJS.enc.Hex);
+        }
+        const nameInput = document.getElementById('namex');
+        const emailInput = document.getElementById('emailx');
+        const phoneInput = document.getElementById('phonex');
+        const paymentButton = document.querySelector('.course-selector-popup-proceed');
+
+        // Initially disable the payment button
+        paymentButton.disabled = true;
+
+        // Add event listeners to the input fields
+        nameInput.addEventListener('input', checkInputs);
+        emailInput.addEventListener('input', checkInputs);
+        phoneInput.addEventListener('input', checkInputs);
+
+        // Function to check if all inputs are filled
+        function checkInputs() {
+          if (nameInput.value.trim() !== '' && emailInput.value.trim() !== '' && phoneInput.value.trim() !== '') {
+            paymentButton.disabled = false;
+          } else {
+            paymentButton.disabled = true;
+          }
         }
   </script>
 
