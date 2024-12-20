@@ -685,15 +685,10 @@
             const selectedContainer = document.querySelector('.course-selector-subjects-container.active');
             const selectedSubjects = Array.from(selectedContainer.querySelectorAll('input[name="subject"]:checked'))
                 .map(checkbox => checkbox.value);
-
             // Collect course information
             const selectedCourse = courseDropdown.value;
             const coursePrice = coursePricing[selectedCourse];
             const totalPrice = coursePrice * selectedSubjects.length;
-
-            // Here you would typically send this information to a payment form or server
-            // alert(`Proceeding to payment!\nCourse: ${selectedCourse}\nSubjects: ${selectedSubjects.join(', ')}\nTotal Price: £${totalPrice}`);
-
             // Close popup
             emailPopup.style.display = 'none';
         });
@@ -733,9 +728,9 @@
             document.getElementsByName("amount")[0].value = updated_price_final;
             const productInfo = Final_Product;
             document.getElementsByName("productinfo")[0].value = Final_Product;
-            const firstName = "Giridhar";
-            const email = "gyromixes@gmail.com";
-            const phone = "9108400249";
+            const firstName = document.getElementsByName("firstname")[0].value;;
+            const email = document.getElementsByName("email")[0].value;
+            const phone = document.getElementsByName("phone")[0].value;
             const txnId = "TXN" + Date.now();
             const surl = "https://bobatix.com/Pages/success_page.html";
             const furl = "https://bobatix.com/Pages/fail_page.html";
@@ -766,7 +761,13 @@
 
         // Function to check if all inputs are filled
         function checkInputs() {
+          const name = nameInput.value.trim();
+          const email = emailInput.value.trim();
+          const phone = phoneInput.value.trim();
           if (nameInput.value.trim() !== '' && emailInput.value.trim() !== '' && phoneInput.value.trim() !== '') {
+            document.getElementsByName("firstname")[0].value = name;
+            document.getElementsByName("email")[0].value = email;
+            document.getElementsByName("phone")[0].value = phone;
             paymentButton.disabled = false;
           } else {
             paymentButton.disabled = true;
